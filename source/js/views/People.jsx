@@ -8,6 +8,7 @@ import { getPeople } from 'actions/people';
   loading: state.people.get('loading'),
   people: state.people.get('people'),
 }))
+
 export default class People extends Component {
   static propTypes = {
     error: PropTypes.string,

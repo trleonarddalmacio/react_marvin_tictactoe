@@ -28,6 +28,8 @@ export default class Home extends Component {
       counter,
     } = this.props;
 
+    console.log(this);
+
     return (
       <div className='Home'>
         <h1>Marvin</h1>
