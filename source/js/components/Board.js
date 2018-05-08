@@ -11,24 +11,49 @@ class Board extends Component {
     );
   }
 
+  renderSquareRow(rowCount, noOfColoumn) { 
+    const boardRow = [];
+    for (let x = 0; x < noOfColoumn; x++) {
+      boardRow.push(this.renderSquare((rowCount * noOfColoumn) + x));
+    }
+
+    const toSend = [];
+    toSend.push(
+      <div className='board-row'>
+        {boardRow}
+      </div>
+    )
+    return toSend;
+  }
+
   render() {
+
+    const that = this;
+
+    const board = [];
+
+    for (let y = 0; y < 6; y++) {
+      board.push(this.renderSquareRow(y, 6));
+    }
+
+    // const boardRow = (
+    //   <div className="board-row">{ this.props.squares.map(index  => {
+    //       return (
+    //         this.renderSquare(index)
+    //       );
+    //     })
+    //   }
+    //   </div>
+    // );
+
+    const trialBoard = [];
+    trialBoard.push(this.renderSquare(0));
+    trialBoard.push(this.renderSquare(1));
+    trialBoard.push(this.renderSquare(2));
+
     return (
       <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
+        {board}
       </div>
     );
   }
