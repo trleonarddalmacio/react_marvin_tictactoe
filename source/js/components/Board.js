@@ -32,8 +32,8 @@ class Board extends Component {
 
     const board = [];
 
-    for (let y = 0; y < 6; y++) {
-      board.push(this.renderSquareRow(y, 6));
+    for (let y = 0; y < this.props.dimension; y++) {
+      board.push(this.renderSquareRow(y, this.props.dimension));
     }
 
     // const boardRow = (

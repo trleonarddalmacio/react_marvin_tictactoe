@@ -15,17 +15,16 @@ export default class Game extends Component {
     this.state = {
       history: [
         {
-          squares: Array(36).fill(null),
+          squares: Array(1024).fill(null),
         }
       ],
       stepNumber: 0,
       xIsNext: true,
       xScore: 0,
       yScore: 0,
+      dimension: 32,
     };
   }
-
-  
 
   handleClick(i) {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
@@ -39,12 +38,12 @@ export default class Game extends Component {
     squares[i] = this.state.xIsNext ? "X" : "O";
 
     if (this.state.xIsNext) {
-      const newScore = checkMatch(squares, i, 6, this.state.xScore, this.state.xIsNext);
+      const newScore = checkMatch(squares, i, this.state.dimension, this.state.xScore, this.state.xIsNext);
       this.setState({
         xScore: newScore,
       });
     } else {
-      const newScore = checkMatch(squares, i, 6, this.state.yScore, this.state.xIsNext);
+      const newScore = checkMatch(squares, i, this.state.dimension, this.state.yScore, this.state.xIsNext);
       this.setState({
         yScore: newScore,
       });
@@ -57,7 +56,9 @@ export default class Game extends Component {
         }
       ]),
       stepNumber: history.length,
-      xIsNext: !this.state.xIsNext
+      xIsNext: !this.state.xIsNext,
+      xScore: xScore,
+      yScore: yScore,
     });
   }
 
@@ -89,14 +90,15 @@ export default class Game extends Component {
 
     return (
       <div className="game">
-        <div className="Game Scores">
-          <div>X: {this.state.xScore}</div>
-          <div>Y: {this.state.yScore}</div>
+        <div className="game-scores">
+          <span><strong>X:</strong> {this.state.xScore} || </span>
+          <span><strong>Y:</strong> {this.state.yScore}</span>
         </div>
         <div className="game-board">
           <Board
-            squares={current.squares}
-            onClick={i => this.handleClick(i)}
+            dimension={ this.state.dimension }
+            squares={ current.squares }
+            onClick={ i => this.handleClick(i) }
           />
         </div>
         <div className="game-info">
@@ -259,10 +261,31 @@ function checkMatch(squares, pointer, xbx, score, isX) {
           horizontal = true;
           break;
         case backSlash:
-          if ((pointer ))
+          if (pointer - xbx >= 0) { // Up?
+            if (pointer + xbx < xbx * xbx) { // down ?
+              if ((pointer % xbx) - 1 >= 0) { // left?
+                if ((pointer % xbx) < xbx) { // right ?
+                  if (squares[(pointer - xbx) + 1] === 'X' && squares[pointer + (xbx - 1)] === 'X') {
+                    newScore++;
+                  }
+                }
+              }
+            }
+          }
           backSlash = true;
           break;
         case forwardSlash:
+          if (pointer - xbx >= 0) { // Up?
+            if (pointer + xbx < xbx * xbx) { // down ?
+              if ((pointer % xbx) - 1 >= 0) { // left?
+                if ((pointer % xbx) < xbx) { // right ?
+                  if (squares[(pointer - xbx) - 1] === 'X' && squares[pointer + (xbx + 1)] === 'X') {
+                    newScore++;
+                  }
+                }
+              }
+            }
+          }
           forwardSlash = true;
           break;
         default:
