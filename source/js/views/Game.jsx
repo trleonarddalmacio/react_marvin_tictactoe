@@ -57,8 +57,6 @@ export default class Game extends Component {
       ]),
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
-      xScore: xScore,
-      yScore: yScore,
     });
   }
 
@@ -72,7 +70,7 @@ export default class Game extends Component {
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
-    // const winner = calculateWinner(current.squares, 6, 6);
+    const winner = calculateWinner(this.state.xScore, this.state.yScore, this.state.stepNumber, this.state.dimension);
 
 
     const moves = history.map((step, move) => {
@@ -90,6 +88,7 @@ export default class Game extends Component {
 
     return (
       <div className="game">
+        {winner}
         <div className="game-scores">
           <span><strong>X:</strong> {this.state.xScore} || </span>
           <span><strong>Y:</strong> {this.state.yScore}</span>
@@ -110,16 +109,23 @@ export default class Game extends Component {
   }
 }
 
-function calculateWinner(xScore, yScore) {
-  if (xScore > yScore) {
-    console.log('X Wins!');
+function calculateWinner(xScore, yScore, stepNumber, dimension) {
+  if (stepNumber === dimension * dimension) {
+    let won = '';
+    if (xScore > yScore) {
+      won = 'X won!';
+    } else if (xScore < yScore) {
+      won = 'Y won!';
+    } else {
+      won = 'Its a tie!';
+    }
+    return (
+      <div>
+        {won}
+      </div>
+    );
   }
-  else if (xScore < yScore) {
-    console.log('Y Wins!');
-  }
-  else {
-    console.log('Its a tie!');
-  }
+  return null;
 }
 
 function checkMatch(squares, pointer, xbx, score, isX) {
