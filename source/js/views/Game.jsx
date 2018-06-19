@@ -15,14 +15,14 @@ export default class Game extends Component {
     this.state = {
       history: [
         {
-          squares: Array(1024).fill(null),
+          squares: Array(256).fill(null),
         }
       ],
       stepNumber: 0,
       xIsNext: true,
       xScore: 0,
       yScore: 0,
-      dimension: 32,
+      dimension: 16,
     };
   }
 
@@ -38,6 +38,7 @@ export default class Game extends Component {
     squares[i] = this.state.xIsNext ? "X" : "O";
 
     if (this.state.xIsNext) {
+      console.log(this.state.dimension);
       const newScore = checkMatch(squares, i, this.state.dimension, this.state.xScore, this.state.xIsNext);
       this.setState({
         xScore: newScore,
@@ -171,7 +172,7 @@ function checkMatch(squares, pointer, xbx, score, isX) {
         case right:
           if ((pointer % xbx) + 2 < xbx) {
             if (squares[pointer + 2] === 'X') {
-              if (squares[pointer + 1] === 'O') {
+              if (squares[pointer + 1] === 'O') {x
                 newScore++;
               }
             }
@@ -179,7 +180,7 @@ function checkMatch(squares, pointer, xbx, score, isX) {
           right = true;
           break;
         case downRight:
-          if (pointer + (xbx * 2) < xbx * xbx) {
+          if (pointer + (xbx * 2) < xbx * xbx) { // if it would exceed below the array
             if ((pointer % xbx) + 2 < xbx) {
               if (squares[pointer + ((xbx + 1) * 2)] === 'X') {
                 if (squares[pointer + (xbx + 1)] === 'O') {
@@ -203,8 +204,8 @@ function checkMatch(squares, pointer, xbx, score, isX) {
         case downLeft:
           if (pointer + (xbx * 2) < xbx * xbx) {
             if ((pointer % xbx) - 2 >= 0) {
-              if (squares[pointer - ((xbx - 1) * 2)] === 'X') {
-                if (squares[pointer - (xbx - 1)] === 'O') {
+              if (squares[pointer + ((xbx - 1) * 2)] === 'X') {
+                if (squares[pointer + (xbx - 1)] === 'O') {
                   newScore++;
                 }
               }
